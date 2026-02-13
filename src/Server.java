@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,6 +7,7 @@ public class Server {
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private final int porta;
+    private DataInputStream in;
 
     public Server(int porta){
         this.porta = porta;
@@ -40,7 +41,14 @@ public class Server {
     }
 
     public void leggi(){
-
+        try {
+            InputStream inputStream = clientSocket.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String testo = br.readLine();
+            System.out.println("testo: " + testo);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void chiudi(){

@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 public class Client {
@@ -19,8 +19,20 @@ public class Client {
         try {
             socket = new Socket(nomeServer, portaServer);
             System.out.println("Connessione al server riuscita");
+
             return 1;
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void scrivi (){
+        try {
+            OutputStream outputStream = socket.getOutputStream();
+            PrintWriter pw = new PrintWriter(outputStream);
+            pw.print("ciao");
+            pw.flush();
+        } catch (RuntimeException | IOException e) {
             throw new RuntimeException(e);
         }
     }
