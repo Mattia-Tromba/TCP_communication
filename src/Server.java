@@ -24,6 +24,7 @@ public class Server {
             System.out.println("Il server è in ascolto");
             clientSocket = serverSocket.accept();
             System.out.println("Il server è connesso al client");
+
         }
         catch (BindException b){
             throw new IOException(b.getMessage());
@@ -36,18 +37,24 @@ public class Server {
         }
     }
 
-    public void scrivi(){
-
+    public void scrivi(String message){
+        try {
+            clientSocket.getOutputStream().write((message + "\n").getBytes());
+            clientSocket.getOutputStream().flush();
+        } catch (RuntimeException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void leggi(){
+    public String leggi(){
         try {
             InputStream inputStream = clientSocket.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             String testo = br.readLine();
-            System.out.println("testo: " + testo);
+            return ("testo: " + testo);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("impossibile connettersi");
+            return null;
         }
     }
 

@@ -15,24 +15,33 @@ public class Client {
         this.nome = nome;
     }
 
-    public int connetti(String nomeServer, int portaServer) {
+    public void connetti(String nomeServer, int portaServer) {
         try {
             socket = new Socket(nomeServer, portaServer);
             System.out.println("Connessione al server riuscita");
-
-            return 1;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void scrivi (){
+    public void scrivi (String message){
         try {
             OutputStream outputStream = socket.getOutputStream();
             PrintWriter pw = new PrintWriter(outputStream);
-            pw.print("ciao");
+            pw.print(message + "\n\r");
             pw.flush();
         } catch (RuntimeException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void leggi (){
+        try{
+            InputStream inputStream = socket.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
+            String testo = br.readLine();
+            System.out.println("testo: " + testo);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
