@@ -30,7 +30,7 @@ public class Client {
         try {
             OutputStream outputStream = socket.getOutputStream();
             PrintWriter pw = new PrintWriter(outputStream);
-            pw.print("ciao");
+            pw.print("ciao\n\r");
             pw.flush();
         } catch (RuntimeException | IOException e) {
             throw new RuntimeException(e);
